@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Contenedor que agrupa colores según el estado del componente (Texto del Boton) -->
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_enabled="false" android:color="@color/disabledText"/>
+    <item android:state_enabled="true" android:color="@color/mainBackgroundText"/>
+</selector>

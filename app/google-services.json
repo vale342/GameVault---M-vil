@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "985976949291",
+    "project_id": "gamehealth-370d5",
+    "storage_bucket": "gamehealth-370d5.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:985976949291:android:62a33e608f9bdd45bb386e",
+        "android_client_info": {
+          "package_name": "com.example.gamehealthmanager"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCTRtKbNSMOHUsSPZ4ARY92SeZ34_lQ8pw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

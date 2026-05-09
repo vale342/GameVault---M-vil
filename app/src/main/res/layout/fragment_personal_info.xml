@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFFFF"
+    tools:context=".onboarding.personal.PersonalInfoFragment">
+
+    <!-- Organiza los campos de texto y el botón de forma flexible -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <!-- Crea la sección visual de color violeta en la parte superior -->
+        <View
+            android:id="@+id/view_header_bg"
+            android:layout_width="0dp"
+            android:layout_height="280dp"
+            android:background="#9C27B0"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <!-- Botón de flecha para regresar a la pantalla anterior -->
+        <ImageView
+            android:id="@+id/iv_back_personal"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:contentDescription="Volver"
+            android:src="@drawable/abc_ic_ab_back_material"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:tint="#FFFFFF" />
+
+        <!-- Muestra el logotipo de la aplicación -->
+        <ImageView
+            android:id="@+id/iv_logo"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:contentDescription="Logo"
+            android:src="@mipmap/ic_launcher"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/iv_back_personal" />
+
+        <!-- Título principal que indica la sección de "Tus Datos" -->
+        <TextView
+            android:id="@+id/tv_welcome"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:text="¡Tus Datos!"
+            android:textColor="#FFFFFF"
+            android:textSize="28sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/iv_logo" />
+
+        <!-- Breve instrucción para que el usuario complete su perfil -->
+        <TextView
+            android:id="@+id/tv_subtitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:text="Completa tu perfil personal"
+            android:textColor="#FFFFFF"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_welcome" />
+
+        <!-- Contenedor estético con borde violeta para el campo "Nombre" -->
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/passwordTil"
+            android:id="@+id/firstNameTil"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="16dp"
+            android:hint="Nombre"
+            app:boxStrokeColor="#9C27B0"
+            app:hintTextColor="#9C27B0"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/view_header_bg">
+
+            <!-- Espacio para escribir el nombre del usuario -->
+            <com.google.android.material.textfield.TextInputEditText
+                style="@style/passwordTiet"
+                android:id="@+id/firstNameTiet"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPersonName"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Contenedor para el campo "Apellidos" con estilo de caja delineada -->
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/passwordTil"
+            android:id="@+id/lastNameTil"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:hint="Apellidos"
+            app:boxStrokeColor="#9C27B0"
+            app:hintTextColor="#9C27B0"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/firstNameTil">
+
+            <!-- Espacio para escribir los apellidos del usuario -->
+            <com.google.android.material.textfield.TextInputEditText
+                style="@style/passwordTiet"
+                android:id="@+id/lastNameTiet"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPersonName"
+                android:textColor="#212121" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Contenedor para el "Nombre de usuario" o alias dentro de la app -->
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/passwordTil"
+            android:id="@+id/usernameTil"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:hint="Nombre de usuario:"
+            app:boxStrokeColor="#9C27B0"
+            app:hintTextColor="#9C27B0"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/lastNameTil">
+
+            <!-- Espacio para escribir el nombre público o nickname -->
+            <com.google.android.material.textfield.TextInputEditText
+                style="@style/passwordTiet"
+                android:id="@+id/usernameTiet"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="text"
+                android:textColor="#212121" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Contenedor configurado específicamente para números telefónicos -->
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/passwordTil"
+            android:id="@+id/phoneTil"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:hint="Teléfono:"
+            app:boxStrokeColor="#9C27B0"
+            app:hintTextColor="#9C27B0"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/usernameTil">
+
+            <!-- Abre el teclado numérico para facilitar el ingreso del teléfono -->
+            <com.google.android.material.textfield.TextInputEditText
+                style="@style/passwordTiet"
+                android:id="@+id/phoneTiet"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="phone"
+                android:textColor="#212121" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Contenedor para la "Fecha de nacimiento" -->
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/passwordTil"
+            android:id="@+id/birthDateTil"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:hint="Fecha de nacimiento:"
+            app:boxStrokeColor="#9C27B0"
+            app:hintTextColor="#9C27B0"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/phoneTil">
+
+            <!-- Espacio para ingresar la fecha (pendiente vincular a un calendario) -->
+            <com.google.android.material.textfield.TextInputEditText
+                style="@style/passwordTiet"
+                android:id="@+id/birthDateTiet"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="date"
+                android:textColor="#212121"
+                android:focusable="false"
+                android:clickable="true"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Botón final posicionado al fondo para guardar toda la información -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/saveButton"
+            style="@style/signUpButton"
+            android:layout_width="0dp"
+            android:layout_height="56dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="32dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="32dp"
+            android:text="Guardar"
+            android:textSize="16sp"
+            app:backgroundTint="#9C27B0"
+            app:cornerRadius="12dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/birthDateTil" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.core.widget.NestedScrollView>

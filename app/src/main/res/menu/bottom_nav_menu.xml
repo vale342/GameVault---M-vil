@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/gamesFragment"
+        android:icon="@drawable/home_ic"
+        android:title="Home"/>
+    <item
+        android:id="@+id/gameListsFragment"
+        android:icon="@drawable/gamelists_ic"
+        android:title="GameLists"/>
+    <item
+        android:id="@+id/accountFragment"
+        android:icon="@drawable/account_ic"
+        android:title="Account"/>
+</menu>

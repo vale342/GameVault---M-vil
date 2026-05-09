@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    //Colores
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <!-- Botón de registro -->
+    <color name="disabled">#E0E0E0</color>
+    <color name="mainBackground">#9C27B0</color>
+    <!-- Texto del botón de registro -->
+    <color name="disabledText">#9E9E9E</color>
+    <color name="mainBackgroundText">#FFFFFF</color>
+
+    <color name="ic_launcher_background">#9C27B0</color>
+    <color name="ic_launcher_foreground">#FFFFFF</color>
+</resources>
