@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace = "com.example.gamehealthmanager"
+    namespace = "com.example.gamevault"
     compileSdk {
         version = release(36) {
             minorApiLevel = 1
@@ -12,7 +12,7 @@ android {
     }
 
     defaultConfig {
-        applicationId = "com.example.gamehealthmanager"
+        applicationId = "com.example.gamevault"
         minSdk = 30
         targetSdk = 36
         versionCode = 1

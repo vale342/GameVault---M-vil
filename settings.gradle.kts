@@ -22,5 +22,5 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "GameHealth Manager"
+rootProject.name = "GameVault"
 include(":app")

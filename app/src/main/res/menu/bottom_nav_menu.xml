@@ -2,15 +2,18 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/gamesFragment"
+        android:id="@+id/item_home"
         android:icon="@drawable/home_ic"
-        android:title="Home"/>
+        android:title="Inicio" />
+
     <item
-        android:id="@+id/gameListsFragment"
+        android:id="@+id/item_wishlist"
         android:icon="@drawable/gamelists_ic"
-        android:title="GameLists"/>
+        android:title="Lista" />
+
     <item
-        android:id="@+id/accountFragment"
+        android:id="@+id/item_account"
         android:icon="@drawable/account_ic"
-        android:title="Account"/>
+        android:title="Cuenta" />
+
 </menu>

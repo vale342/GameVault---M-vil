@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
@@ -12,8 +12,11 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.GameHealthManager"
+        android:theme="@style/Theme.GameVault"
         tools:targetApi="31">
+        <activity
+            android:name=".details.GameDetailActivity"
+            android:exported="false" />
         <activity
             android:name=".home.HomeActivity"
             android:exported="false" />

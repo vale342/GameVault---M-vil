@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">GameHealth</string>
+    <string name="app_name">GameVault</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="mail">Correo:</string>
     <string name="password">Contraseña:</string>

@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/registerFragment"
-        android:name="com.example.gamehealthmanager.onboarding.signup.RegisterFragment"
+        android:name="com.example.gamevault.onboarding.signup.RegisterFragment"
         android:label="fragment_register"
         tools:layout="@layout/fragment_register" >
         <action
@@ -16,7 +16,7 @@
     </fragment>
     <fragment
         android:id="@+id/loginFragment"
-        android:name="com.example.gamehealthmanager.onboarding.signin.LoginFragment"
+        android:name="com.example.gamevault.onboarding.signin.LoginFragment"
         android:label="fragment_login"
         tools:layout="@layout/fragment_login" >
         <action
@@ -25,7 +25,7 @@
     </fragment>
     <fragment
         android:id="@+id/personalInfoFragment"
-        android:name="com.example.gamehealthmanager.onboarding.personal.PersonalInfoFragment"
+        android:name="com.example.gamevault.onboarding.personal.PersonalInfoFragment"
         android:label="fragment_personal_info"
         tools:layout="@layout/fragment_personal_info" />
 </navigation>
