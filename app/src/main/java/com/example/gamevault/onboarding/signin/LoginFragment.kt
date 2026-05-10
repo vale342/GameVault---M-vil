@@ -43,27 +43,27 @@ class LoginFragment : Fragment() {
         return binding.root
     }
     private fun setupValidation() {
-        binding.signInButton.isEnabled = false
-        binding.emailTiet.addTextChangedListener { validateAndEnable() }
-        binding.passwordTiet.addTextChangedListener { validateAndEnable() }
+        binding.btnLogin.isEnabled = false
+        binding.etEmail.addTextChangedListener { validateAndEnable() }
+        binding.etPassword.addTextChangedListener { validateAndEnable() }
     }
 
     private fun validateAndEnable() {
-        val email = binding.emailTiet.text.toString().trim()
-        val password = binding.passwordTiet.text.toString().trim()
+        val email = binding.etEmail.text.toString().trim()
+        val password = binding.etPassword.text.toString().trim()
 
         binding.emailTil.error = viewModel.validateEmail(email)
         binding.passwordTil.error = viewModel.validatePassword(password)
-        binding.signInButton.isEnabled = viewModel.isLoginFormValid(email, password)
+        binding.btnLogin.isEnabled = viewModel.isLoginFormValid(email, password)
     }
 
     private fun setupClickListeners() {
-        binding.signInButton.setOnClickListener {
-            val email = binding.emailTiet.text.toString().trim()
-            val password = binding.passwordTiet.text.toString().trim()
+        binding.btnLogin.setOnClickListener {
+            val email = binding.etEmail.text.toString().trim()
+            val password = binding.etPassword.text.toString().trim()
             viewModel.requestLogin(email, password)
         }
-        binding.registerText.setOnClickListener {
+        binding.tvGoToRegister.setOnClickListener {
             findNavController()
                 .navigate(R.id.action_loginFragment_to_registerFragment)
         }
@@ -76,7 +76,7 @@ class LoginFragment : Fragment() {
                     when (state) {
                         is ResponseService.Loading -> {
                             communicator.manageLoader(true)
-                            binding.signInButton.isEnabled = false
+                            binding.btnLogin.isEnabled = false
                         }
                         is ResponseService.Success -> {
                             communicator.manageLoader(false)
@@ -86,7 +86,7 @@ class LoginFragment : Fragment() {
                         }
                         is ResponseService.Error -> {
                             communicator.manageLoader(false)
-                            binding.signInButton.isEnabled = true
+                            binding.btnLogin.isEnabled = true
                             Snackbar.make(binding.root, state.error,
                                 Snackbar.LENGTH_LONG).show()
                         }

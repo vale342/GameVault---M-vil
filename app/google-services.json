@@ -1,21 +1,21 @@
 {
   "project_info": {
-    "project_number": "985976949291",
-    "project_id": "gamehealth-370d5",
-    "storage_bucket": "gamehealth-370d5.firebasestorage.app"
+    "project_number": "862553500178",
+    "project_id": "gamevault-43572",
+    "storage_bucket": "gamevault-43572.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:985976949291:android:62a33e608f9bdd45bb386e",
+        "mobilesdk_app_id": "1:862553500178:android:86d65c019e9a512e10c6cb",
         "android_client_info": {
-          "package_name": "com.equipo.gamevaultmanager"
+          "package_name": "com.example.gamevault"
         }
       },
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyCTRtKbNSMOHUsSPZ4ARY92SeZ34_lQ8pw"
+          "current_key": "AIzaSyCr53TXlLbLmnNYnMpW_UqRl23F413VtI0"
         }
       ],
       "services": {
