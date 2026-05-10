@@ -39,34 +39,37 @@ class RegisterFragment : Fragment() {
     }
 
     private fun setupValidation() {
-        binding.signInButton.isEnabled = false
+        binding.btnRegister.isEnabled = false
         val watcher = { validateAndEnable() }
-        binding.emailTiet.addTextChangedListener { validateAndEnable() }
-        binding.passwordTiet.addTextChangedListener { validateAndEnable() }
-        binding.confirmPasswordTiet.addTextChangedListener { validateAndEnable() }
+        binding.etEmail.addTextChangedListener { validateAndEnable() }
+        binding.etPassword.addTextChangedListener { validateAndEnable() }
+        binding.etConfirmPassword.addTextChangedListener { validateAndEnable() }
     }
 
     private fun validateAndEnable() {
-        val email = binding.emailTiet.text.toString().trim()
-        val pass = binding.passwordTiet.text.toString().trim()
-        val confirm = binding.confirmPasswordTiet.text.toString().trim()
+        val email = binding.etEmail.text.toString().trim()
+        val pass = binding.etPassword.text.toString().trim()
+        val confirm = binding.etConfirmPassword.text.toString().trim()
 
         binding.emailTil.error = viewModel.validateEmail(email)
         binding.passwordTil.error = viewModel.validatePassword(pass)
         binding.confirmPasswordTil.error =
             viewModel.validateConfirmPassword(pass, confirm)
 
-        binding.signInButton.isEnabled =
+        binding.btnRegister.isEnabled =
             viewModel.isRegisterFormValid(email, pass, confirm)
     }
 
     private fun setupClickListeners() {
-        binding.signInButton.setOnClickListener {
-            val email = binding.emailTiet.text.toString().trim()
-            val password = binding.passwordTiet.text.toString().trim()
+        binding.btnRegister.setOnClickListener {
+            val email = binding.etEmail.text.toString().trim()
+            val password = binding.etPassword.text.toString().trim()
             viewModel.requestSignUp(email, password)
         }
-        binding.registerText.setOnClickListener {
+        binding.tvGoToLogin.setOnClickListener {
+            findNavController().navigateUp()
+        }
+        binding.btnBack.setOnClickListener {
             findNavController().navigateUp()
         }
     }
@@ -78,7 +81,7 @@ class RegisterFragment : Fragment() {
                     when (state) {
                         is ResponseService.Loading -> {
                             communicator.manageLoader(true)
-                            binding.signInButton.isEnabled = false
+                            binding.btnRegister.isEnabled = false
                         }
                         is ResponseService.Success -> {
                             communicator.manageLoader(false)
@@ -86,7 +89,7 @@ class RegisterFragment : Fragment() {
                         }
                         is ResponseService.Error -> {
                             communicator.manageLoader(false)
-                            binding.signInButton.isEnabled = true
+                            binding.btnRegister.isEnabled = true
                             Snackbar.make(binding.root, state.error,
                                 Snackbar.LENGTH_LONG).show()
                         }
