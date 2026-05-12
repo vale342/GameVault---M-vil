@@ -34,14 +34,6 @@ class PersonalInfoViewModel: ViewModel() {
         return null
     }
 
-    fun validateUsername(value: String): String? {
-        if (value.isBlank()) return "El usuario es requerido"
-        if (value.length < 4) return "Mínimo 4 caracteres"
-        if (!value.matches(Regex("^[a-zA-Z0-9_.]+$")))
-            return "Solo letras, números, _ y ."
-        return null
-    }
-
     fun validatePhone(value: String): String? {
         if (value.isBlank()) return "El teléfono es requerido"
         if (!value.all { it.isDigit() }) return "Solo números"
@@ -55,25 +47,23 @@ class PersonalInfoViewModel: ViewModel() {
     }
 
     fun isFormValid(
-        firstName: String, lastName: String, username: String,
+        firstName: String, lastName: String,
         phone: String, birthDate: String
     ): Boolean {
         return validateFirstName(firstName) == null &&
                 validateLastName(lastName) == null &&
-                validateUsername(username) == null &&
                 validatePhone(phone) == null &&
                 validateBirthDate(birthDate) == null
     }
 
     fun saveProfile(uid: String, firstName: String, lastName: String,
-                    username: String, phone: String, birthDate: String) {
+                    phone: String, birthDate: String) {
         viewModelScope.launch {
             _saveState.value = ResponseService.Loading
             val user = UserProfile(
                 id = uid,
                 firstName = firstName,
                 lastName = lastName,
-                userName = username,
                 phone = phone,
                 birthDate = birthDate
             )

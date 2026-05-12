@@ -6,8 +6,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.isVisible
-import com.equipo.gamevault.R
-import com.equipo.gamevault.databinding.ActivityMainBinding
+import com.example.gamevault.R
+import com.example.gamevault.databinding.ActivityMainBinding
 import com.example.gamevault.core.FragmentCommunicator
 
 class MainActivity : AppCompatActivity(), FragmentCommunicator {
