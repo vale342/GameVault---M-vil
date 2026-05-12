@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/cat_accion"
+        android:title="Acción" />
+    <item
+        android:id="@+id/cat_aventura"
+        android:title="Aventura" />
+    <item
+        android:id="@+id/cat_rpg"
+        android:title="RPG" />
+    <item
+        android:id="@+id/cat_shooter"
+        android:title="Shooter" />
+</menu>
