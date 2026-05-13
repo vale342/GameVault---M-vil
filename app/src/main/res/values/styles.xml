@@ -46,4 +46,9 @@
         <item name="android:textColorHint">#000000</item>
 
     </style>
+
+    <style name="CircleImage">
+        <item name="cornerSize">50%</item> <!-- Crea el efecto circular del diseño -->
+    </style>
+
 </resources>
