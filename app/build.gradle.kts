@@ -59,4 +59,6 @@ dependencies {
     implementation(libs.firebase.firestore) // Si vas a guardar datos de salud
     implementation(libs.coroutines.core)
     implementation(libs.coroutines.android)
+    implementation(libs.firebase.storage)
+    implementation(libs.glide)
 }
