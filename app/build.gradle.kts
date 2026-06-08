@@ -78,4 +78,5 @@ dependencies {
     implementation(libs.okhttp.logging)
     implementation(libs.glide)
     implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
+    // 🪓 Se eliminó la línea de firebase.storage que causaba el error
 }
