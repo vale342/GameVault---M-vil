@@ -6,27 +6,51 @@
     android:layout_height="wrap_content"
     android:layout_margin="8dp"
     app:cardCornerRadius="12dp"
-    app:cardElevation="2dp"
-    app:strokeWidth="1dp"
-    app:strokeColor="#E2E8F0">
+    app:cardElevation="4dp"
+    app:cardBackgroundColor="#1E1E2E"
+    app:strokeWidth="0dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <ImageView
-            android:id="@+id/imgCover"
+        <!-- Imagen con rating encima -->
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="100dp"
-            android:scaleType="centerCrop"
-            android:background="#252525" />
+            android:layout_height="130dp">
 
+            <ImageView
+                android:id="@+id/imgCover"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
+                android:background="#2A2A3E" />
+
+            <!-- Badge de rating -->
+            <TextView
+                android:id="@+id/tvRating"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:background="#CC000000"
+                android:paddingStart="6dp"
+                android:paddingEnd="6dp"
+                android:paddingTop="2dp"
+                android:paddingBottom="2dp"
+                android:text="★ 4.5"
+                android:textColor="#FFD700"
+                android:textSize="10sp"
+                android:textStyle="bold" />
+        </FrameLayout>
+
+        <!-- Info del juego -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="12dp">
+            android:padding="10dp"
+            android:background="#1E1E2E">
 
             <TextView
                 android:id="@+id/tvTitle"
@@ -34,7 +58,7 @@
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
                 android:maxLines="2"
-                android:textColor="#0F172A"
+                android:textColor="#FFFFFF"
                 android:textSize="13sp"
                 android:textStyle="bold"
                 android:text="Nombre del Juego" />
@@ -43,7 +67,8 @@
                 android:id="@+id/tvGenres"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="#64748B"
+                android:layout_marginTop="2dp"
+                android:textColor="#A78BFA"
                 android:textSize="10sp"
                 android:text="Género • Acción" />
 
@@ -52,7 +77,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
-                android:textColor="#0F172A"
+                android:textColor="#94A3B8"
                 android:textSize="9sp"
                 android:textStyle="bold"
                 android:text="PC • PS5 • XBX" />

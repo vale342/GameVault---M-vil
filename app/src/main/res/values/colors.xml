@@ -17,4 +17,6 @@
     <color name="primary_dark">#5B21B6</color>
     <color name="texto_secundario">#647488</color>
     <color name="accent">#F59E0B</color>
+    <color name="bottom_nav_item_selected">#FFFFFF</color>
+    <color name="bottom_nav_item_unselected">#B39DDB</color>
 </resources>

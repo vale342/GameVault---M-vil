@@ -3,21 +3,38 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_home"
-    app:startDestination="@id/item_home"> <fragment
-    android:id="@+id/item_home"
-    android:name="com.example.gamevault.home.dashboard.GamesFragment"
-    android:label="Inicio"
-    tools:layout="@layout/fragment_games"/>
+    app:startDestination="@id/gamesFragment">
+
+    <fragment
+        android:id="@+id/gamesFragment"
+        android:name="com.example.gamevault.home.games.GamesFragment"
+        android:label="Inicio"
+        tools:layout="@layout/fragment_games">
+        <action
+            android:id="@+id/action_gamesFragment_to_gameDetailFragment"
+            app:destination="@id/gameDetailFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/gameDetailFragment"
+        android:name="com.example.gamevault.home.gameDetail.GameDetailFragment"
+        android:label="Detalle"
+        tools:layout="@layout/fragment_game_detail">
+        <argument
+            android:name="game"
+            app:argType="com.example.gamevault.core.model.GameItem" />
+    </fragment>
 
     <fragment
         android:id="@+id/item_wishlist"
-        android:name="com.example.gamevault.home.gameLists.WishlistFragment"
-        android:label="Lista de deseos"
+        android:name="com.example.gamevault.home.gameLists.GameListsFragment"
+        android:label="Lista"
         tools:layout="@layout/fragment_game_lists" />
 
     <fragment
         android:id="@+id/item_account"
-        android:name="com.example.gamevault.home.account.accountFragment"
-        android:label="Mi cuenta"
+        android:name="com.example.gamevault.home.account.AccountFragment"
+        android:label="Cuenta"
         tools:layout="@layout/fragment_account" />
+
 </navigation>
