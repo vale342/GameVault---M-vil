@@ -30,7 +30,6 @@ class GamesAdapter(
 
         fun bind(game: GameItem) {
             binding.tvTitle.text = game.name ?: "Sin título"
-
             binding.tvRating.text = "★ ${"%.1f".format(game.rating ?: 0.0)}"
 
             val genres = game.genres

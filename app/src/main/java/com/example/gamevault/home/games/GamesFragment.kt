@@ -14,6 +14,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
+import com.bumptech.glide.Glide
 import com.example.gamevault.R
 import com.example.gamevault.core.FragmentCommunicator
 import com.example.gamevault.core.ResponseService
@@ -80,34 +81,66 @@ class GamesFragment : Fragment() {
         binding.swipeRefresh.setOnRefreshListener {
             binding.etSearch.text?.clear()
             viewModel.loadGames()
+            viewModel.cargarDatosUsuario()
         }
     }
 
     private fun observeState() {
         viewLifecycleOwner.lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.gamesState.collect { state ->
-                    when (state) {
-                        is ResponseService.Loading -> {
-                            communicator.manageLoader(true)
-                            showEmpty(false)
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+
+                // 1. 🚀 Escucha Concurrente: Datos de Usuario y Foto de Perfil
+                launch {
+                    viewModel.userState.collect { state ->
+                        when (state) {
+                            is ResponseService.Loading -> {
+                                binding.tvUserName.text = "Cargando..."
+                            }
+                            is ResponseService.Success -> {
+                                val datos = state.data
+                                binding.tvUserName.text = "${datos.fullName} 👋"
+
+                                // Solución de contexto limpia usando requireContext() e importando Glide
+                                Glide.with(requireContext())
+                                    .load(android.R.drawable.sym_def_app_icon)
+                                    .centerCrop()
+                                    .into(binding.imgAvatar)
+                            }
+                            is ResponseService.Error -> {
+                                binding.tvUserName.text = "Gamer 👋"
+                                binding.imgAvatar.setImageResource(android.R.drawable.sym_def_app_icon)
+                            }
+                            null -> {}
                         }
-                        is ResponseService.Success -> {
-                            communicator.manageLoader(false)
-                            binding.swipeRefresh.isRefreshing = false
-                            val games = state.data
-                            gamesAdapter.submitList(games)
-                            showEmpty(games.isEmpty())
-                        }
-                        is ResponseService.Error -> {
-                            communicator.manageLoader(false)
-                            binding.swipeRefresh.isRefreshing = false
-                            showEmpty(false)
-                            Snackbar.make(binding.root, state.error, Snackbar.LENGTH_LONG).show()
-                        }
-                        null -> {}
                     }
                 }
+
+                // 2. 🎮 Escucha Concurrente: Listado de videojuegos original
+                launch {
+                    viewModel.gamesState.collect { state ->
+                        when (state) {
+                            is ResponseService.Loading -> {
+                                communicator.manageLoader(true)
+                                showEmpty(false)
+                            }
+                            is ResponseService.Success -> {
+                                communicator.manageLoader(false)
+                                binding.swipeRefresh.isRefreshing = false
+                                val games = state.data
+                                gamesAdapter.submitList(games)
+                                showEmpty(games.isEmpty())
+                            }
+                            is ResponseService.Error -> {
+                                communicator.manageLoader(false)
+                                binding.swipeRefresh.isRefreshing = false
+                                showEmpty(false)
+                                Snackbar.make(binding.root, state.error, Snackbar.LENGTH_LONG).show()
+                            }
+                            null -> {}
+                        }
+                    }
+                }
+
             }
         }
     }
