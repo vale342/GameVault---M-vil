@@ -26,6 +26,14 @@ data class GameItem(
 ) : Parcelable
 
 @Parcelize
+data class Wish(
+    val id: Int,
+    val name: String,
+    val backgroundImage: String,
+    val rating: Double
+) : Parcelable
+
+@Parcelize
 data class PlatformWrapper(
     val platform: Platform?
 ) : Parcelable
@@ -46,20 +54,24 @@ data class Genre(
 
 data class GameDetail(
     val id: Int,
-    val slug: String?,
     val name: String?,
     @SerializedName("description_raw") val descriptionRaw: String?,
     val released: String?,
     @SerializedName("background_image") val backgroundImage: String?,
-    val website: String?,
     val rating: Double?,
-    val metacritic: Int?,
     val playtime: Int?,
     val platforms: List<PlatformWrapper>?,
     val genres: List<Genre>?,
     val developers: List<Developer>?,
     val publishers: List<Publisher>?,
-    @SerializedName("esrb_rating") val esrbRating: EsrbRating?
+    @SerializedName("metacritic") val metacritic: Int?,
+    // AGREGA ESTA LÍNEA:
+    @SerializedName("short_screenshots") val shortScreenshots: List<Screenshot>?
+)
+
+data class GameDetailUiState(
+    val game: GameDetail,
+    val isSaved: Boolean
 )
 
 data class Developer(val id: Int, val name: String?, val slug: String?)

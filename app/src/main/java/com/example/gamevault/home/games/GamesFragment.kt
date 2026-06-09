@@ -30,8 +30,10 @@ class GamesFragment : Fragment() {
     private val viewModel by viewModels<GamesViewModel>()
     private lateinit var communicator: FragmentCommunicator
 
+
     private val gamesAdapter = GamesAdapter { game ->
-        val bundle = bundleOf("game" to game)
+
+        val bundle = bundleOf("gameId" to game.id.toString())
         findNavController().navigate(R.id.action_gamesFragment_to_gameDetailFragment, bundle)
     }
 
@@ -89,7 +91,7 @@ class GamesFragment : Fragment() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
 
-                // 1. 🚀 Escucha Concurrente: Datos de Usuario y Foto de Perfil
+
                 launch {
                     viewModel.userState.collect { state ->
                         when (state) {
@@ -100,7 +102,7 @@ class GamesFragment : Fragment() {
                                 val datos = state.data
                                 binding.tvUserName.text = "${datos.fullName} 👋"
 
-                                // Solución de contexto limpia usando requireContext() e importando Glide
+
                                 Glide.with(requireContext())
                                     .load(android.R.drawable.sym_def_app_icon)
                                     .centerCrop()
@@ -115,7 +117,7 @@ class GamesFragment : Fragment() {
                     }
                 }
 
-                // 2. 🎮 Escucha Concurrente: Listado de videojuegos original
+
                 launch {
                     viewModel.gamesState.collect { state ->
                         when (state) {

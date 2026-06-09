@@ -38,19 +38,19 @@ class AccountViewModel : ViewModel() {
 
         _uiState.value = ResponseService.Loading
 
-        // Consultar el documento del usuario en Firestore
+
         firestore.collection("users1").document(uid).get()
             .addOnSuccessListener { document ->
                 if (document != null && document.exists()) {
-                    // 🚀 Adaptabilidad de campos: lee tanto 'firstName' como 'name' para evitar textos en blanco
+
                     val firstName = document.getString("firstName") ?: document.getString("name") ?: ""
                     val lastName = document.getString("lastName") ?: ""
                     val phone = document.getString("phone") ?: document.getString("celular") ?: document.getString("telefono") ?: ""
 
-                    // Dar formato al nombre dependiendo de si existen apellidos guardados
+
                     val nombreCompleto = if (lastName.isNotEmpty()) "$firstName $lastName".trim() else firstName
 
-                    // Proceder a escuchar la colección de favoritos en tiempo real
+
                     activarEscuchaWishlist(nombreCompleto, emailReal, phone)
                 } else {
                     _uiState.value = ResponseService.Error("No se encontró el perfil en la base de datos.")
@@ -64,10 +64,10 @@ class AccountViewModel : ViewModel() {
     private fun activarEscuchaWishlist(nombre: String, email: String, telefono: String) {
         val uid = auth.currentUser?.uid ?: return
 
-        // Limpiar cualquier listener previo activo para evitar fugas de memoria
+
         wishlistListener?.remove()
 
-        // Escucha activa a la colección de favoritos filtrada por el id del usuario
+
         wishlistListener = firestore.collection("favoritos")
             .whereEqualTo("userId", uid)
             .addSnapshotListener { snapshots, error ->

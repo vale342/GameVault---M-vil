@@ -27,11 +27,11 @@ class GamesViewModel(
     private val auth: FirebaseAuth = FirebaseAuth.getInstance()
     private val firestore: FirebaseFirestore = FirebaseFirestore.getInstance()
 
-    // Flujo 1: Videojuegos (original)
+
     private val _gamesState = MutableStateFlow<ResponseService<List<GameItem>>?>(null)
     val gamesState: StateFlow<ResponseService<List<GameItem>>?> = _gamesState.asStateFlow()
 
-    // Flujo 2: Encabezado del perfil del usuario (nuevo)
+
     private val _userState = MutableStateFlow<ResponseService<UserHeaderData>?>(null)
     val userState: StateFlow<ResponseService<UserHeaderData>?> = _userState.asStateFlow()
 
@@ -39,7 +39,7 @@ class GamesViewModel(
 
     init {
         loadGames()
-        // Cargamos los datos en cuanto nace el ciclo de vida del ViewModel
+
         cargarDatosUsuario()
     }
 
@@ -62,7 +62,7 @@ class GamesViewModel(
         }
     }
 
-    // Consulta exacta a la colección unificada de tu equipo
+
     fun cargarDatosUsuario() {
         val uid = auth.currentUser?.uid ?: return
         _userState.value = ResponseService.Loading

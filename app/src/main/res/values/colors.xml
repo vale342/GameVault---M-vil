@@ -19,4 +19,6 @@
     <color name="accent">#F59E0B</color>
     <color name="bottom_nav_item_selected">#FFFFFF</color>
     <color name="bottom_nav_item_unselected">#B39DDB</color>
+    <color name="purple_500">#6200EE</color>
+    <color name="green_success">#4CAF50</color>
 </resources>

@@ -34,10 +34,10 @@ class AccountFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         communicator = requireActivity() as FragmentCommunicator
 
-        // Escuchar los estados emitidos por el ViewModel
+
         setupObservers()
 
-        // Redirección a la pantalla de Edición de Perfil
+
         view.findViewById<View>(R.id.cardPersonalInfo)?.setOnClickListener {
             try {
                 val intent = Intent(requireContext(), Class.forName("com.example.gamevault.onboarding.personal.EditarPerfilActivity"))
@@ -47,7 +47,7 @@ class AccountFragment : Fragment() {
             }
         }
 
-        // Redirección a la Configuración de la App
+
         view.findViewById<View>(R.id.btnConfiguracion)?.setOnClickListener {
             try {
                 val intent = Intent(requireContext(), Class.forName("com.example.gamevault.home.account.ConfiguracionActivity"))
@@ -57,7 +57,7 @@ class AccountFragment : Fragment() {
             }
         }
 
-        // Botón de cierre de sesión
+
         view.findViewById<View>(R.id.btnCerrarSesion)?.setOnClickListener {
             mostrarDialogoCierreSesion()
         }
@@ -75,7 +75,7 @@ class AccountFragment : Fragment() {
                             communicator.manageLoader(false)
                             val datos = state.data
 
-                            // Vincular datos del objeto UserProfileData con los componentes del XML
+
                             view?.findViewById<TextView>(R.id.tvUserName)?.text = datos.fullName
                             view?.findViewById<TextView>(R.id.tvUserEmail)?.text = datos.email
                             view?.findViewById<TextView>(R.id.tvNombreCompletoInfo)?.text = datos.fullName
@@ -99,7 +99,7 @@ class AccountFragment : Fragment() {
             .setMessage("Cerrarás tu sesión actual en GameVault.")
             .setPositiveButton("Salir") { _, _ ->
                 viewModel.cerrarSesion {
-                    // 🚀 Redirección limpia al MainActivity del flujo inicial destruyendo el árbol del Home
+
                     val intent = Intent(
                         requireContext(),
                         com.example.gamevault.onboarding.MainActivity::class.java

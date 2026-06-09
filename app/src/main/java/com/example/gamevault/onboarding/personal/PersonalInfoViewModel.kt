@@ -17,7 +17,7 @@ class PersonalInfoViewModel: ViewModel() {
     private val _saveState = MutableStateFlow<ResponseService<Unit>?>(null)
     val saveState: StateFlow<ResponseService<Unit>?> = _saveState.asStateFlow()
 
-    // --- Validaciones por campo ---
+
     fun validateFirstName(value: String): String? {
         if (value.isBlank()) return "El nombre es requerido"
         if (value.length < 2) return "Mínimo 2 caracteres"

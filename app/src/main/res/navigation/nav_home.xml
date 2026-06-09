@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+<navigation
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+
     android:id="@+id/nav_home"
+
     app:startDestination="@id/gamesFragment">
 
     <fragment
@@ -10,9 +13,11 @@
         android:name="com.example.gamevault.home.games.GamesFragment"
         android:label="Inicio"
         tools:layout="@layout/fragment_games">
+
         <action
             android:id="@+id/action_gamesFragment_to_gameDetailFragment"
-            app:destination="@id/gameDetailFragment" />
+            app:destination="@id/gameDetailFragment"/>
+
     </fragment>
 
     <fragment
@@ -20,21 +25,23 @@
         android:name="com.example.gamevault.home.gameDetail.GameDetailFragment"
         android:label="Detalle"
         tools:layout="@layout/fragment_game_detail">
+
         <argument
-            android:name="game"
-            app:argType="com.example.gamevault.core.model.GameItem" />
+            android:name="gameId"
+            app:argType="string"/>
+
     </fragment>
 
     <fragment
-        android:id="@+id/item_wishlist"
-        android:name="com.example.gamevault.home.gameLists.GameListsFragment"
-        android:label="Lista"
-        tools:layout="@layout/fragment_game_lists" />
+        android:id="@+id/wishlistFragment"
+        android:name="com.example.gamevault.home.wishlist.WishlistFragment"
+        android:label="Favoritos"
+        tools:layout="@layout/fragment_wishlist"/>
 
     <fragment
         android:id="@+id/item_account"
         android:name="com.example.gamevault.home.account.AccountFragment"
         android:label="Cuenta"
-        tools:layout="@layout/fragment_account" />
+        tools:layout="@layout/fragment_account"/>
 
 </navigation>

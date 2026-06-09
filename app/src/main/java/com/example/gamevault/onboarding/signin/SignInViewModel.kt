@@ -34,7 +34,7 @@ class SignInViewModel: ViewModel() {
                 validatePassword(password) == null
     }
 
-    // --- Operación de login ---
+
     fun requestLogin(email: String, password: String) {
         viewModelScope.launch {
             _signInState.value = ResponseService.Loading
