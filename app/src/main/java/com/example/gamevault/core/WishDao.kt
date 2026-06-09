@@ -15,23 +15,36 @@ interface WishDao {
         game: WishEntity
     )
 
-    @Query(
-        "DELETE FROM wishlist WHERE id = :id"
-    )
+    @Query("""
+DELETE
+FROM wishlist
+WHERE id=:id
+AND userId=:userId
+""")
     suspend fun delete(
-        id: Int
+        id:Int,
+        userId:String
     )
 
-    @Query(
-        "SELECT EXISTS(SELECT 1 FROM wishlist WHERE id=:id)"
-    )
+    @Query("""
+SELECT EXISTS(
+SELECT 1
+FROM wishlist
+WHERE id=:id
+AND userId=:userId
+)
+""")
     suspend fun exists(
-        id: Int
+        id:Int,
+        userId:String
     ): Boolean
 
-    @Query(
-        "SELECT * FROM wishlist"
-    )
-    suspend fun getWishlist():
-            List<WishEntity>
+    @Query("""
+SELECT *
+FROM wishlist
+WHERE userId=:userId
+""")
+    suspend fun getWishlist(
+        userId:String
+    ): List<WishEntity>
 }

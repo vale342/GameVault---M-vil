@@ -14,47 +14,34 @@ class WishlistViewModel(
     application: Application
 ) : AndroidViewModel(application) {
 
-    private val repo =
-        GameRepository(
-            AppDatabase
-                .get(application)
-                .wishDao()
-        )
+    private val repo = GameRepository(
+        AppDatabase.get(application).wishDao()
+    )
 
-    private val _games =
-        MutableStateFlow<List<WishEntity>>(
-            emptyList()
-        )
-
-    val games =
-        _games.asStateFlow()
+    private val _games = MutableStateFlow<List<WishEntity>>(emptyList())
+    val games = _games.asStateFlow()
 
     fun loadWishlist() {
-
         viewModelScope.launch {
-
             try {
 
-                _games.value =
-                    repo.getWishlist()
+                val remoteList = repo.getWishlist()
+
+
+                _games.value = remoteList
 
             } catch (e: Exception) {
 
-                _games.value =
-                    emptyList()
+                _games.value = repo.getWishlist()
             }
         }
     }
 
-    fun deleteGame(
-        id: Int
-    ) {
-
+    fun deleteGame(id: Int) {
         viewModelScope.launch {
 
-            repo.removeFromWishlist(
-                id
-            )
+            repo.removeFromWishlist(id)
+
 
             loadWishlist()
         }
