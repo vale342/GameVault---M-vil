@@ -34,7 +34,7 @@ class LoginFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
+
         _binding = FragmentLoginBinding.inflate(inflater, container, false)
         communicator = requireActivity() as FragmentCommunicator
         setupValidation()

@@ -17,7 +17,6 @@ class RegisterViewModel: ViewModel() {
     val registerState: StateFlow<ResponseService<FirebaseUser>?> = _registerState.asStateFlow()
 
 
-    // --- Validación ---
     fun validateEmail(email: String): String? { /* igual que SignInViewModel */ return null }
     fun validatePassword(password: String): String? { /* igual */ return null }
 
@@ -35,7 +34,7 @@ class RegisterViewModel: ViewModel() {
                 validateConfirmPassword(password, confirm) == null
     }
 
-    // --- Operación de registro ---
+
     fun requestSignUp(email: String, password: String) {
         viewModelScope.launch {
             _registerState.value = ResponseService.Loading
