@@ -47,4 +47,7 @@ WHERE userId=:userId
     suspend fun getWishlist(
         userId:String
     ): List<WishEntity>
+
+    @Query("SELECT COUNT(*) FROM wishlist WHERE userId=:userId")
+    suspend fun getWishlistCount(userId: String): Int
 }

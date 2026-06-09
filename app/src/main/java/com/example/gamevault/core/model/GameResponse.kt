@@ -66,7 +66,8 @@ data class GameDetail(
     val publishers: List<Publisher>?,
     @SerializedName("metacritic") val metacritic: Int?,
     // AGREGA ESTA LÍNEA:
-    @SerializedName("short_screenshots") val shortScreenshots: List<Screenshot>?
+    @SerializedName("short_screenshots") val shortScreenshots: List<Screenshot>?,
+    @SerializedName("reviews_count") val reviewsCount: Int = 0
 )
 
 data class GameDetailUiState(

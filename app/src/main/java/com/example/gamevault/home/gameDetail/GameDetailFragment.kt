@@ -29,173 +29,74 @@ class GameDetailFragment : Fragment(R.layout.fragment_game_detail) {
 
     private val viewModel: GameDetailViewModel by viewModels()
 
-    override fun onViewCreated(
-        view: View,
-        savedInstanceState: Bundle?
-    ) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        _binding =
-            FragmentGameDetailBinding.bind(view)
+        _binding = FragmentGameDetailBinding.bind(view)
 
         setupListeners()
         observeState()
         observeWishlist()
 
-        arguments
-            ?.getString("gameId")
-            ?.let {
-                viewModel.fetchGameDetail(it)
-            }
+        arguments?.getString("gameId")?.let {
+            viewModel.fetchGameDetail(it)
+        }
     }
 
     private fun setupListeners() {
-
         binding.btnBack.setOnClickListener {
-            requireActivity()
-                .onBackPressedDispatcher
-                .onBackPressed()
-        }
-
-        val saveGame = {
-
-            val game =
-                (viewModel.detailState.value
-                        as? ResponseService.Success)
-                    ?.data
-
-            game?.let {
-                viewModel.toggleWishlist(it)
-            }
-        }
-
-        binding.btnWishToggle.setOnClickListener {
-            saveGame()
+            requireActivity().onBackPressedDispatcher.onBackPressed()
         }
 
         binding.btnWishlist.setOnClickListener {
-            saveGame()
+            val game = (viewModel.detailState.value as? ResponseService.Success)?.data
+            game?.let { viewModel.toggleWishlist(it) }
         }
     }
 
     private fun observeWishlist() {
-
         viewLifecycleOwner.lifecycleScope.launch {
-
-            viewLifecycleOwner.repeatOnLifecycle(
-                Lifecycle.State.STARTED
-            ) {
-
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.isSaved.collect { saved ->
-
-                    binding.btnWishToggle.setImageResource(
-                        if (saved)
-                            R.drawable.ic_heart
-                        else
-                            R.drawable.ic_heart
+                    // CORRECCIÓN: Usamos .icon para el MaterialButton y cambiamos el texto
+                    binding.btnWishlist.icon = ContextCompat.getDrawable(
+                        requireContext(),
+                        R.drawable.ic_heart
                     )
+                    binding.btnWishlist.text = if (saved) "En mi lista" else "Agregar a mi lista"
                 }
             }
         }
     }
 
     private fun observeState() {
-
         viewLifecycleOwner.lifecycleScope.launch {
-
-            viewLifecycleOwner.repeatOnLifecycle(
-                Lifecycle.State.STARTED
-            ) {
-
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.detailState.collect { response ->
-
                     when (response) {
-
-                        is ResponseService.Loading -> {
-
-                            (activity as? FragmentCommunicator)
-                                ?.manageLoader(true)
-                        }
-
+                        is ResponseService.Loading -> (activity as? FragmentCommunicator)?.manageLoader(true)
                         is ResponseService.Success -> {
+                            (activity as? FragmentCommunicator)?.manageLoader(false)
+                            val game = response.data ?: return@collect
 
-                            (activity as? FragmentCommunicator)
-                                ?.manageLoader(false)
+                            Glide.with(this@GameDetailFragment).load(game.backgroundImage).centerCrop().into(binding.ivGameCover)
+                            binding.tvTitle.text = game.name
+                            binding.tvAbout.text = game.descriptionRaw ?: "Sin descripción"
+                            binding.tvDeveloper.text = game.developers?.firstOrNull()?.name ?: "N/A"
+                            binding.tvPlaytime.text = "${game.playtime ?: 0} hrs"
+                            binding.rbRating.rating = game.rating?.toFloat() ?: 0f
+                            binding.tvRating.text = game.rating?.toString() ?: "0.0"
 
-                            val game =
-                                response.data
-                                    ?: return@collect
+                            // Visualización correcta de votos
+                            binding.tvReviews.text = "(${game.reviewsCount} votos)"
 
-                            Glide
-                                .with(this@GameDetailFragment)
-                                .load(game.backgroundImage)
-                                .centerCrop()
-                                .into(binding.ivGameCover)
-
-                            binding.tvTitle.text =
-                                game.name
-
-                            binding.tvAbout.text =
-                                game.descriptionRaw
-                                    ?: "Sin descripción"
-
-                            binding.tvDeveloper.text =
-                                game.developers
-                                    ?.firstOrNull()
-                                    ?.name
-                                    ?: "N/A"
-
-                            binding.tvPlaytime.text =
-                                "${game.playtime ?: 0} hrs"
-
-                            binding.rbRating.rating =
-                                game.rating
-                                    ?.toFloat()
-                                    ?: 0f
-
-                            binding.tvRating.text =
-                                game.rating
-                                    ?.toString()
-                                    ?: "0.0"
-
-                            binding.tvReviews.text =
-                                "(${game.metacritic ?: 0} votos)"
-
-                            loadChips(
-                                game.genres
-                                    ?.map {
-                                        it.name ?: ""
-                                    },
-                                binding.cgGenres
-                            )
-
-                            loadChips(
-                                game.platforms
-                                    ?.map {
-                                        it.platform?.name ?: ""
-                                    },
-                                binding.cgPlatforms
-                            )
-
-                            loadGallery(
-                                game.shortScreenshots
-                            )
+                            loadChips(game.genres?.map { it.name ?: "" }, binding.cgGenres)
+                            loadChips(game.platforms?.map { it.platform?.name ?: "" }, binding.cgPlatforms)
+                            loadGallery(game.shortScreenshots)
                         }
-
                         is ResponseService.Error -> {
-
-                            (activity as? FragmentCommunicator)
-                                ?.manageLoader(false)
-
-                            Toast
-                                .makeText(
-                                    requireContext(),
-                                    response.error,
-                                    Toast.LENGTH_LONG
-                                )
-                                .show()
+                            (activity as? FragmentCommunicator)?.manageLoader(false)
+                            Toast.makeText(requireContext(), response.error, Toast.LENGTH_LONG).show()
                         }
-
                         else -> {}
                     }
                 }
@@ -203,95 +104,37 @@ class GameDetailFragment : Fragment(R.layout.fragment_game_detail) {
         }
     }
 
-    private fun loadGallery(
-        screenshots: List<Screenshot>?
-    ) {
-
+    private fun loadGallery(screenshots: List<Screenshot>?) {
         binding.llGallery.removeAllViews()
+        if (screenshots.isNullOrEmpty()) return
 
-        if (screenshots.isNullOrEmpty())
-            return
-
-        val density =
-            resources.displayMetrics.density
-
+        val density = resources.displayMetrics.density
         screenshots.forEach { screenshot ->
-
-            val image =
-                ImageView(requireContext()).apply {
-
-                    layoutParams =
-                        LinearLayout.LayoutParams(
-                            (250 * density).toInt(),
-                            (150 * density).toInt()
-                        ).apply {
-
-                            marginEnd =
-                                (12 * density).toInt()
-                        }
-
-                    scaleType =
-                        ImageView.ScaleType.CENTER_CROP
-
-                    outlineProvider =
-                        object : ViewOutlineProvider() {
-
-                            override fun getOutline(
-                                view: View,
-                                outline: Outline
-                            ) {
-
-                                outline.setRoundRect(
-                                    0,
-                                    0,
-                                    view.width,
-                                    view.height,
-                                    (12 * density)
-                                )
-                            }
-                        }
-
-                    clipToOutline = true
+            val image = ImageView(requireContext()).apply {
+                layoutParams = LinearLayout.LayoutParams((250 * density).toInt(), (150 * density).toInt()).apply {
+                    marginEnd = (12 * density).toInt()
                 }
-
-            Glide
-                .with(this)
-                .load(screenshot.image)
-                .into(image)
-
+                scaleType = ImageView.ScaleType.CENTER_CROP
+                outlineProvider = object : ViewOutlineProvider() {
+                    override fun getOutline(view: View, outline: Outline) {
+                        outline.setRoundRect(0, 0, view.width, view.height, (12 * density))
+                    }
+                }
+                clipToOutline = true
+            }
+            Glide.with(this).load(screenshot.image).into(image)
             binding.llGallery.addView(image)
         }
     }
 
-    private fun loadChips(
-        items: List<String>?,
-        group: com.google.android.material.chip.ChipGroup
-    ) {
-
+    private fun loadChips(items: List<String>?, group: com.google.android.material.chip.ChipGroup) {
         group.removeAllViews()
-
         items?.forEach { text ->
-
-            val chip =
-                Chip(requireContext()).apply {
-
-                    this.text = text
-
-                    setChipBackgroundColor(
-                        ContextCompat.getColorStateList(
-                            requireContext(),
-                            R.color.purple_500
-                        )
-                    )
-
-                    setTextColor(
-                        ContextCompat.getColor(
-                            requireContext(),
-                            android.R.color.white
-                        )
-                    )
-                }
-
+            val chip = Chip(requireContext()).apply {
+                this.text = text
+                setChipBackgroundColor(ContextCompat.getColorStateList(requireContext(), R.color.purple_500))
+                setTextColor(ContextCompat.getColor(requireContext(), android.R.color.white))
+            }
             group.addView(chip)
         }
     }

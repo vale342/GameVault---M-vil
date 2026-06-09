@@ -123,4 +123,6 @@ dependencies {
     androidTestImplementation(
         libs.androidx.espresso.core
     )
+
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.7.3")
 }

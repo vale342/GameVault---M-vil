@@ -1,8 +1,11 @@
 package com.example.gamevault.home.account
 
-import androidx.lifecycle.ViewModel
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.gamevault.core.ResponseService
+import com.example.gamevault.core.database.AppDatabase
+import com.example.gamevault.core.repositories.GameRepository
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ListenerRegistration
@@ -10,18 +13,14 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
 
-data class UserProfileData(
-    val fullName: String,
-    val email: String,
-    val phone: String,
-    val wishlistCount: Int
-)
+data class UserProfileData(val fullName: String, val email: String, val phone: String, val wishlistCount: Int)
 
-class AccountViewModel : ViewModel() {
+class AccountViewModel(application: Application) : AndroidViewModel(application) {
 
-    private val auth: FirebaseAuth = FirebaseAuth.getInstance()
-    private val firestore: FirebaseFirestore = FirebaseFirestore.getInstance()
+    private val auth = FirebaseAuth.getInstance()
+    private val firestore = FirebaseFirestore.getInstance()
 
     private val _uiState = MutableStateFlow<ResponseService<UserProfileData>?>(null)
     val uiState: StateFlow<ResponseService<UserProfileData>?> = _uiState.asStateFlow()
@@ -29,79 +28,43 @@ class AccountViewModel : ViewModel() {
     private var wishlistListener: ListenerRegistration? = null
 
     init {
-        cargarInformacionPerfil()
+        activarEscuchaPerfilYWishlist()
     }
 
-    fun cargarInformacionPerfil() {
-        val uid = auth.currentUser?.uid ?: return
-        val emailReal = auth.currentUser?.email ?: ""
-
-        _uiState.value = ResponseService.Loading
-
-
-        firestore.collection("users1").document(uid).get()
-            .addOnSuccessListener { document ->
-                if (document != null && document.exists()) {
-
-                    val firstName = document.getString("firstName") ?: document.getString("name") ?: ""
-                    val lastName = document.getString("lastName") ?: ""
-                    val phone = document.getString("phone") ?: document.getString("celular") ?: document.getString("telefono") ?: ""
-
-
-                    val nombreCompleto = if (lastName.isNotEmpty()) "$firstName $lastName".trim() else firstName
-
-
-                    activarEscuchaWishlist(nombreCompleto, emailReal, phone)
-                } else {
-                    _uiState.value = ResponseService.Error("No se encontró el perfil en la base de datos.")
-                }
-            }
-            .addOnFailureListener { exception ->
-                _uiState.value = ResponseService.Error(exception.localizedMessage ?: "Error al conectar con Firestore")
-            }
-    }
-
-    private fun activarEscuchaWishlist(nombre: String, email: String, telefono: String) {
+    private fun activarEscuchaPerfilYWishlist() {
         val uid = auth.currentUser?.uid ?: return
 
+        // 1. Escuchar cambios en la wishlist en tiempo real
+        wishlistListener = firestore.collection("users1")
+            .document(uid)
+            .collection("wishlist")
+            .addSnapshotListener { snapshot, _ ->
+                val count = snapshot?.size() ?: 0
 
-        wishlistListener?.remove()
+                // 2. Obtener datos del perfil cada vez que cambia la wishlist
+                viewModelScope.launch {
+                    try {
+                        val doc = firestore.collection("users1").document(uid).get().await()
+                        val nombre = doc.getString("firstName") ?: "Usuario"
+                        val email = auth.currentUser?.email ?: ""
+                        val phone = doc.getString("phone") ?: "No registrado"
 
-
-        wishlistListener = firestore.collection("favoritos")
-            .whereEqualTo("userId", uid)
-            .addSnapshotListener { snapshots, error ->
-                if (error != null) {
-                    _uiState.value = ResponseService.Success(
-                        UserProfileData(nombre, email, telefono, 0)
-                    )
-                    return@addSnapshotListener
-                }
-
-                if (snapshots != null) {
-                    val count = snapshots.size()
-                    _uiState.value = ResponseService.Success(
-                        UserProfileData(
-                            fullName = if (nombre.isNotEmpty()) nombre else "Usuario",
-                            email = email,
-                            phone = if (telefono.isNotEmpty()) telefono else "No registrado",
-                            wishlistCount = count
-                        )
-                    )
+                        _uiState.value = ResponseService.Success(UserProfileData(nombre, email, phone, count))
+                    } catch (e: Exception) {
+                        // Si falla perfil, mostramos al menos el conteo
+                        _uiState.value = ResponseService.Error("Error al actualizar perfil")
+                    }
                 }
             }
     }
 
     fun cerrarSesion(onSuccess: () -> Unit) {
-        viewModelScope.launch {
-            auth.signOut()
-            onSuccess()
-        }
+        auth.signOut()
+        onSuccess()
     }
 
     override fun onCleared() {
         super.onCleared()
-        // Remover el listener de Firestore al destruir el ciclo de vida del ViewModel
-        wishlistListener?.remove()
+        wishlistListener?.remove() // Limpiar el listener para evitar fugas de memoria
     }
 }

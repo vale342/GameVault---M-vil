@@ -26,27 +26,22 @@ class WishlistAdapter(
         binding.root
     ) {
 
-        fun bind(
-            game: WishEntity
-        ) {
+        fun bind(game: WishEntity) {
+            binding.tvTitle.text = game.name
 
-            binding.tvTitle.text =
-                game.name
+            // 1. Vincula el RatingBar (la calificación visual)
+            binding.rbRating.rating = game.rating.toFloat()
 
-            binding.tvGenre.text =
-                "★ ${game.rating}"
+            // 2. Vincula el TextView con el número
+            binding.tvRating.text = game.rating.toString()
 
-            Glide
-                .with(binding.root)
+            Glide.with(binding.root)
                 .load(game.image)
                 .centerCrop()
                 .into(binding.ivGame)
 
             binding.btnDelete.setOnClickListener {
-
-                onDelete?.invoke(
-                    game
-                )
+                onDelete?.invoke(game)
             }
         }
     }

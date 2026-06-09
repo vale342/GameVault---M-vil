@@ -3,11 +3,10 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginVertical="8dp"
-
+    app:cardBackgroundColor="#1F1F1F"
     app:cardCornerRadius="16dp"
     app:cardElevation="0dp">
 
@@ -20,62 +19,63 @@
             android:id="@+id/ivGame"
             android:layout_width="80dp"
             android:layout_height="80dp"
-            android:contentDescription="Imagen del juego"
             android:scaleType="centerCrop"
-
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-
             tools:src="@tools:sample/avatars"/>
 
         <TextView
             android:id="@+id/tvTitle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-
             android:layout_marginStart="16dp"
-
-            android:textColor="#000000"
+            android:textColor="#FFFFFF"
             android:textSize="16sp"
             android:textStyle="bold"
-
             app:layout_constraintStart_toEndOf="@id/ivGame"
             app:layout_constraintTop_toTopOf="@id/ivGame"
             app:layout_constraintEnd_toStartOf="@id/btnDelete"
-
             tools:text="Elden Ring"/>
 
-        <TextView
-            android:id="@+id/tvGenre"
+        <LinearLayout
+            android:id="@+id/llRatingContainer"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-
             android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
-
-            android:textColor="#666666"
-            android:textSize="14sp"
-
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
             app:layout_constraintStart_toEndOf="@id/ivGame"
             app:layout_constraintTop_toBottomOf="@id/tvTitle"
-            app:layout_constraintEnd_toStartOf="@id/btnDelete"
+            app:layout_constraintEnd_toStartOf="@id/btnDelete">
 
-            tools:text="★ 4.7"/>
+            <RatingBar
+                android:id="@+id/rbRating"
+                style="?android:attr/ratingBarStyleSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:progressTint="#FFC107"
+                android:numStars="5"
+                tools:rating="4.7" />
+
+            <TextView
+                android:id="@+id/tvRating"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:textColor="#666666"
+                android:textSize="14sp"
+                tools:text="4.7"/>
+        </LinearLayout>
 
         <ImageButton
             android:id="@+id/btnDelete"
-
             android:layout_width="40dp"
             android:layout_height="40dp"
-
             android:background="?attr/selectableItemBackgroundBorderless"
-            android:contentDescription="Eliminar"
-
             android:src="@drawable/ic_remove"
-
             app:tint="#FF5252"
-
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"/>
 
