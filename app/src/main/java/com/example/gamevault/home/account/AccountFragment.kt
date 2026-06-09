@@ -34,9 +34,7 @@ class AccountFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         communicator = requireActivity() as FragmentCommunicator
 
-
         setupObservers()
-
 
         view.findViewById<View>(R.id.cardPersonalInfo)?.setOnClickListener {
             try {
@@ -47,7 +45,6 @@ class AccountFragment : Fragment() {
             }
         }
 
-
         view.findViewById<View>(R.id.btnConfiguracion)?.setOnClickListener {
             try {
                 val intent = Intent(requireContext(), Class.forName("com.example.gamevault.home.account.ConfiguracionActivity"))
@@ -56,7 +53,6 @@ class AccountFragment : Fragment() {
                 Toast.makeText(requireContext(), "Pantalla de configuración en desarrollo", Toast.LENGTH_SHORT).show()
             }
         }
-
 
         view.findViewById<View>(R.id.btnCerrarSesion)?.setOnClickListener {
             mostrarDialogoCierreSesion()
@@ -74,7 +70,6 @@ class AccountFragment : Fragment() {
                         is ResponseService.Success -> {
                             communicator.manageLoader(false)
                             val datos = state.data
-
 
                             view?.findViewById<TextView>(R.id.tvUserName)?.text = datos.fullName
                             view?.findViewById<TextView>(R.id.tvUserEmail)?.text = datos.email
@@ -99,7 +94,6 @@ class AccountFragment : Fragment() {
             .setMessage("Cerrarás tu sesión actual en GameVault.")
             .setPositiveButton("Salir") { _, _ ->
                 viewModel.cerrarSesion {
-
                     val intent = Intent(
                         requireContext(),
                         com.example.gamevault.onboarding.MainActivity::class.java

@@ -32,6 +32,11 @@ interface WishDao {
     @Query(
         "SELECT * FROM wishlist"
     )
+    fun getWishlistFlow(): kotlinx.coroutines.flow.Flow<List<WishEntity>>
+
+    @Query(
+        "SELECT * FROM wishlist"
+    )
     suspend fun getWishlist():
             List<WishEntity>
 }

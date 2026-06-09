@@ -1,11 +1,12 @@
 package com.example.gamevault.home.account
 
-import androidx.lifecycle.ViewModel
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.gamevault.core.ResponseService
+import com.example.gamevault.core.database.AppDatabase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.ListenerRegistration
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -18,15 +19,20 @@ data class UserProfileData(
     val wishlistCount: Int
 )
 
-class AccountViewModel : ViewModel() {
+class AccountViewModel(application: Application) : AndroidViewModel(application) {
 
     private val auth: FirebaseAuth = FirebaseAuth.getInstance()
     private val firestore: FirebaseFirestore = FirebaseFirestore.getInstance()
 
+    // 🚀 Instancia segura conectada a la base de datos local de Room (Singleton)
+    private val wishDao = AppDatabase.get(application).wishDao()
+
     private val _uiState = MutableStateFlow<ResponseService<UserProfileData>?>(null)
     val uiState: StateFlow<ResponseService<UserProfileData>?> = _uiState.asStateFlow()
 
-    private var wishlistListener: ListenerRegistration? = null
+    private var nombreGuardado = ""
+    private var emailGuardado = ""
+    private var telefonoGuardado = ""
 
     init {
         cargarInformacionPerfil()
@@ -38,20 +44,21 @@ class AccountViewModel : ViewModel() {
 
         _uiState.value = ResponseService.Loading
 
-
         firestore.collection("users1").document(uid).get()
             .addOnSuccessListener { document ->
                 if (document != null && document.exists()) {
-
                     val firstName = document.getString("firstName") ?: document.getString("name") ?: ""
                     val lastName = document.getString("lastName") ?: ""
                     val phone = document.getString("phone") ?: document.getString("celular") ?: document.getString("telefono") ?: ""
 
-
                     val nombreCompleto = if (lastName.isNotEmpty()) "$firstName $lastName".trim() else firstName
 
+                    nombreGuardado = if (nombreCompleto.isNotEmpty()) nombreCompleto else "Usuario"
+                    emailGuardado = emailReal
+                    telefonoGuardado = if (phone.isNotEmpty()) phone else "No registrado"
 
-                    activarEscuchaWishlist(nombreCompleto, emailReal, phone)
+                    // 🚀 Activamos la escucha de la base de datos local
+                    activarEscuchaWishlistLocal()
                 } else {
                     _uiState.value = ResponseService.Error("No se encontró el perfil en la base de datos.")
                 }
@@ -61,35 +68,22 @@ class AccountViewModel : ViewModel() {
             }
     }
 
-    private fun activarEscuchaWishlist(nombre: String, email: String, telefono: String) {
-        val uid = auth.currentUser?.uid ?: return
+    private fun activarEscuchaWishlistLocal() {
+        viewModelScope.launch {
+            // 🚀 Conectamos el flujo directo al método de Room
+            wishDao.getWishlistFlow().collect { listaDeWishes ->
+                val totalJuegos = listaDeWishes.size
 
-
-        wishlistListener?.remove()
-
-
-        wishlistListener = firestore.collection("favoritos")
-            .whereEqualTo("userId", uid)
-            .addSnapshotListener { snapshots, error ->
-                if (error != null) {
-                    _uiState.value = ResponseService.Success(
-                        UserProfileData(nombre, email, telefono, 0)
+                _uiState.value = ResponseService.Success(
+                    UserProfileData(
+                        fullName = nombreGuardado,
+                        email = emailGuardado,
+                        phone = telefonoGuardado,
+                        wishlistCount = totalJuegos
                     )
-                    return@addSnapshotListener
-                }
-
-                if (snapshots != null) {
-                    val count = snapshots.size()
-                    _uiState.value = ResponseService.Success(
-                        UserProfileData(
-                            fullName = if (nombre.isNotEmpty()) nombre else "Usuario",
-                            email = email,
-                            phone = if (telefono.isNotEmpty()) telefono else "No registrado",
-                            wishlistCount = count
-                        )
-                    )
-                }
+                )
             }
+        }
     }
 
     fun cerrarSesion(onSuccess: () -> Unit) {
@@ -97,11 +91,5 @@ class AccountViewModel : ViewModel() {
             auth.signOut()
             onSuccess()
         }
-    }
-
-    override fun onCleared() {
-        super.onCleared()
-        // Remover el listener de Firestore al destruir el ciclo de vida del ViewModel
-        wishlistListener?.remove()
     }
 }
